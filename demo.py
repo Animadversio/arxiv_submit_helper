@@ -1,7 +1,32 @@
+#%%
 import os
+import re
 from PIL import Image
 
 
+def extract_includegraphics_paths(tex_file, output_file):
+    with open(tex_file, 'r', encoding='utf-8') as f:
+        tex_contents = f.read()
+
+    # Regular expression to match \includegraphics command and extract the image path
+    pattern = r"\\includegraphics(?:\[.*\])?\{(?![}\\])(.*?)\}"
+
+    # Find all matches
+    matches = re.findall(pattern, tex_contents)
+    if output_file:
+        # Write image paths to the output file
+        with open(output_file, 'w', encoding='utf-8') as f:
+            for match in matches:
+                f.write(match + '\n')
+
+        print(f"Image paths extracted and written to {output_file}")
+    return matches
+
+output_file = None
+tex_file = "/Users/binxuwang/Library/CloudStorage/OneDrive-HarvardUniversity/NeurIPS2023_Diffusion/NeurIPS 2023 Geometry of Diffusion_Best_Arxiv_upload/neurips_Diffusion_Geometry.tex"
+extract_includegraphics_paths(tex_file, output_file)
+
+#%%
 text_file_path = "refered_figs.tex"
 search_directory = 'NeurIPS 2023 Geometry of Diffusion_Best_Arxiv'
 
